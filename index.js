@@ -44,7 +44,7 @@ async function run(options) {
   while(proposer === null){
     proposer = await getProposer(chainId);
     count ++;
-    console.log(`tried ${count} times.`);
+    console.log(`tried ${count} times to find proposers, but not.`);
 
     await sleep(12)
   }
