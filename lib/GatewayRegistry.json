@@ -1,0 +1,57 @@
+[
+    {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "ip",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "name": "addGatewayIP"
+    },
+    {
+        "inputs": [],
+        "stateMutability": "view",
+        "type": "function",
+        "name": "getGatewayIPs",
+        "outputs": [
+            {
+                "internalType": "string[]",
+                "name": "",
+                "type": "string[]"
+            }
+        ]
+    },
+    {
+        "inputs": [],
+        "stateMutability": "view",
+        "type": "function",
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "ip",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "name": "removeGatewayIPByValue"
+    }
+]

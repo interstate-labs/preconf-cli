@@ -1,0 +1,588 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "target",
+				"type": "address"
+			}
+		],
+		"name": "AddressEmptyCode",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "implementation",
+				"type": "address"
+			}
+		],
+		"name": "ERC1967InvalidImplementation",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "ERC1967NonPayable",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "FailedCall",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "InvalidInitialization",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "InvalidNodeIdentity",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "InvalidOperatorAssignment",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "NotInitializing",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "OwnableInvalidOwner",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "OwnableUnauthorizedAccount",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "SecureRegistrationRequired",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "SignatureVerificationFailed",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "UUPSUnauthorizedCallContext",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "slot",
+				"type": "bytes32"
+			}
+		],
+		"name": "UUPSUnsupportedProxiableUUID",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "UnauthorizedAccessAttempt",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes20",
+				"name": "pubkeyHash",
+				"type": "bytes20"
+			}
+		],
+		"name": "ValidatorDoesNotExist",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "nodeIdentityHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "ConsensusNodeRegistered",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "version",
+				"type": "uint64"
+			}
+		],
+		"name": "Initialized",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "implementation",
+				"type": "address"
+			}
+		],
+		"name": "Upgraded",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "UPGRADE_INTERFACE_VERSION",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256[2]",
+						"name": "x",
+						"type": "uint256[2]"
+					},
+					{
+						"internalType": "uint256[2]",
+						"name": "y",
+						"type": "uint256[2]"
+					}
+				],
+				"internalType": "struct BLS12381.G1Point[]",
+				"name": "pubkeys",
+				"type": "tuple[]"
+			},
+			{
+				"internalType": "string",
+				"name": "rpcs",
+				"type": "string"
+			},
+			{
+				"internalType": "uint32",
+				"name": "maxGasCommitment",
+				"type": "uint32"
+			}
+		],
+		"name": "bulkEnrollValidatorsWithVerification",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256[2]",
+						"name": "x",
+						"type": "uint256[2]"
+					},
+					{
+						"internalType": "uint256[2]",
+						"name": "y",
+						"type": "uint256[2]"
+					}
+				],
+				"internalType": "struct BLS12381.G1Point",
+				"name": "pubkey",
+				"type": "tuple"
+			}
+		],
+		"name": "computeNodeIdentityHash",
+		"outputs": [
+			{
+				"internalType": "bytes20",
+				"name": "",
+				"type": "bytes20"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256[2]",
+						"name": "x",
+						"type": "uint256[2]"
+					},
+					{
+						"internalType": "uint256[2]",
+						"name": "y",
+						"type": "uint256[2]"
+					}
+				],
+				"internalType": "struct BLS12381.G1Point",
+				"name": "pubkey",
+				"type": "tuple"
+			},
+			{
+				"internalType": "string",
+				"name": "rpc",
+				"type": "string"
+			},
+			{
+				"internalType": "uint32",
+				"name": "maxGasCommitment",
+				"type": "uint32"
+			},
+			{
+				"internalType": "address",
+				"name": "operatorAddress",
+				"type": "address"
+			}
+		],
+		"name": "enrollValidatorWithVerification",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "fetchAllValidatorNodes",
+		"outputs": [
+			{
+				"components": [
+					{
+						"components": [
+							{
+								"internalType": "uint256[2]",
+								"name": "x",
+								"type": "uint256[2]"
+							},
+							{
+								"internalType": "uint256[2]",
+								"name": "y",
+								"type": "uint256[2]"
+							}
+						],
+						"internalType": "struct BLS12381.G1Point",
+						"name": "pubkey",
+						"type": "tuple"
+					},
+					{
+						"internalType": "string",
+						"name": "rpcs",
+						"type": "string"
+					},
+					{
+						"internalType": "bytes20",
+						"name": "nodeIdentityHash",
+						"type": "bytes20"
+					},
+					{
+						"internalType": "uint32",
+						"name": "gasCapacityLimit",
+						"type": "uint32"
+					},
+					{
+						"internalType": "address",
+						"name": "controllerAddress",
+						"type": "address"
+					}
+				],
+				"internalType": "struct INodeRegistrationSystem.ValidatorNodeDetails[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes20",
+				"name": "nodeIdentityHash",
+				"type": "bytes20"
+			}
+		],
+		"name": "fetchValidatorByIdentityHash",
+		"outputs": [
+			{
+				"components": [
+					{
+						"components": [
+							{
+								"internalType": "uint256[2]",
+								"name": "x",
+								"type": "uint256[2]"
+							},
+							{
+								"internalType": "uint256[2]",
+								"name": "y",
+								"type": "uint256[2]"
+							}
+						],
+						"internalType": "struct BLS12381.G1Point",
+						"name": "pubkey",
+						"type": "tuple"
+					},
+					{
+						"internalType": "string",
+						"name": "rpcs",
+						"type": "string"
+					},
+					{
+						"internalType": "bytes20",
+						"name": "nodeIdentityHash",
+						"type": "bytes20"
+					},
+					{
+						"internalType": "uint32",
+						"name": "gasCapacityLimit",
+						"type": "uint32"
+					},
+					{
+						"internalType": "address",
+						"name": "controllerAddress",
+						"type": "address"
+					}
+				],
+				"internalType": "struct INodeRegistrationSystem.ValidatorNodeDetails",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256[2]",
+						"name": "x",
+						"type": "uint256[2]"
+					},
+					{
+						"internalType": "uint256[2]",
+						"name": "y",
+						"type": "uint256[2]"
+					}
+				],
+				"internalType": "struct BLS12381.G1Point",
+				"name": "pubkey",
+				"type": "tuple"
+			}
+		],
+		"name": "fetchValidatorByPublicKey",
+		"outputs": [
+			{
+				"components": [
+					{
+						"components": [
+							{
+								"internalType": "uint256[2]",
+								"name": "x",
+								"type": "uint256[2]"
+							},
+							{
+								"internalType": "uint256[2]",
+								"name": "y",
+								"type": "uint256[2]"
+							}
+						],
+						"internalType": "struct BLS12381.G1Point",
+						"name": "pubkey",
+						"type": "tuple"
+					},
+					{
+						"internalType": "string",
+						"name": "rpcs",
+						"type": "string"
+					},
+					{
+						"internalType": "bytes20",
+						"name": "nodeIdentityHash",
+						"type": "bytes20"
+					},
+					{
+						"internalType": "uint32",
+						"name": "gasCapacityLimit",
+						"type": "uint32"
+					},
+					{
+						"internalType": "address",
+						"name": "controllerAddress",
+						"type": "address"
+					}
+				],
+				"internalType": "struct INodeRegistrationSystem.ValidatorNodeDetails",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_parameters",
+				"type": "address"
+			}
+		],
+		"name": "initialize",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "protocolParameters",
+		"outputs": [
+			{
+				"internalType": "contract IParameters",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "proxiableUUID",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes20",
+				"name": "nodeIdentityHash",
+				"type": "bytes20"
+			},
+			{
+				"internalType": "uint32",
+				"name": "maxGasCommitment",
+				"type": "uint32"
+			}
+		],
+		"name": "updateNodeCapacity",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newImplementation",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "upgradeToAndCall",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	}
+]
