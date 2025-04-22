@@ -10,14 +10,14 @@ const program = new Command();
 
 async function main() {
   // const wallet = await getWallet("helder", "6d35c1bdf469031cfe3cbaddd57ca69a36835a39c2a6f2cefc17c804851b0635");
-  const wallet = await getWallet("helder", "bcdf20249abf0ed6d944c0288fad489e33f66b3960d9e6229c1cd214ed3bbe31");
+  const wallet = await getWallet("hoodi", "2cb26dcd8b503c3a708448fb27ebd2f725ef1a1305014ec0e44a9f89d204ee0e");
 
   let price = {
     "type": "eth",
     "amount": "0.001"
   };
 
-  sendPreconfirmationToSidecar(wallet, 'helder', price);
+  sendPreconfirmationToSidecar(wallet, 'hoodi', price);
 
   price = {
     "type": "0x0643D39D47CF0ea95Dbea69Bf11a7F8C4Bc34968",
@@ -42,13 +42,14 @@ async function main() {
   program
     .command('send-preconf')
     .description('Send a preconfirmation transaction to the specified network')
-    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet or holesky)")
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, or mainnet)")
     .option("-p, --pvk <type>", "[Optional] Private key used to sign the transaction")
     .option("-t, --tx <type>", "[Optional] rawSignedTx you would like to send")
     .addHelpText('after', `
 Example:
   $ preconf-cli send-preconf -n devnet
   $ preconf-cli send-preconf -n holesky -p <your-private-key>
+  $ preconf-cli send-preconf -n hoodi -p <your-private-key>
   $ preconf-cli send-preconf -n mainnet -p <your-private-key> -tx <your-signed-tx>
     `)
     .action(handleSend);
@@ -56,13 +57,14 @@ Example:
   program
     .command('whitelist-gateway')
     .description('Whitelist an entity to be allowed to make preconfirmation requests (typically a gateway)')
-    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, mainnet)")
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, mainnet)")
     .requiredOption("-p, --pvk <type>", "[Required] Private key used to sign the transaction")
     .requiredOption("-i, --ip <type>", "[Required] IP Address of the entity that should be whitelisted to make preconfirmation requests on the network")
     .addHelpText('after', `
 Example:
   $ preconf-cli whitelist-gateway -n devnet -p <your-private-key> -ip <your-ip-address>
   $ preconf-cli whitelist-gateway -n holesky -p <your-private-key> -ip <your-ip-address>
+  $ preconf-cli whitelist-gateway -n hoodi -p <your-private-key> -ip <your-ip-address>
   $ preconf-cli whitelist-gateway -n mainnet -p <your-private-key> -ip <your-ip-address>
     `)
     .action(handleWhitelist);
@@ -70,13 +72,14 @@ Example:
   program
     .command('init-registry-system')
     .description('Initialize the registry system.')
-    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, mainnet)")
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, mainnet)")
     .requiredOption("-p, --pvk <type>", "[Required] Private key used to sign the transaction")
     .requiredOption("-k, --pubk <type>", "[Required] Public Key of the address to be initialized")
     .addHelpText('after', `
 Example:
   $ preconf-cli init-registry-system -n devnet -p <your-private-key> -k <public-key>
   $ preconf-cli init-registry-system -n holesky -p <your-private-key> -k <public-key>
+  $ preconf-cli init-registry-system -n hoodi -p <your-private-key> -k <public-key>
   $ preconf-cli init-registry-system -n mainnet -p <your-private-key> -k <public-key>
     `)
     .action(handleInitializeRegistrySystem);
@@ -84,13 +87,14 @@ Example:
   program
     .command('register-protocol')
     .description('Register the protocol with the given address.')
-    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, mainnet)")
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, mainnet)")
     .requiredOption("-p, --pvk <type>", "[Required] Private key used to sign the transaction")
     .requiredOption("-k, --pubk <type>", "[Required] Public Key of the protocol address to be initialized")
     .addHelpText('after', `
 Example:
   $ preconf-cli register-protocol -n devnet -p <your-private-key> -k <public-key>
   $ preconf-cli register-protocol -n holesky -p <your-private-key> -k <public-key>
+  $ preconf-cli register-protocol -n hoodi -p <your-private-key> -k <public-key>
   $ preconf-cli register-protocol -n mainnet -p <your-private-key> -k <public-key>
     `)
     .action(handleRegisterProtocol);
@@ -98,7 +102,7 @@ Example:
   program
     .command('register-operator')
     .description('Register the operator with the sidecar url.')
-    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, mainnet)")
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, mainnet)")
     .requiredOption("-p, --pvk <type>", "[Required] Private key used to sign the transaction")
     .requiredOption("-k, --pubk <type>", "[Required] Public Key of the operator address to be initialized")
     .requiredOption("-i, --ip <type>", "[Required] IP Address with port number of the sidecar")
@@ -106,6 +110,7 @@ Example:
 Example:
   $ preconf-cli register-operator -n devnet -p <your-private-key> -k <public-key> -i <your-ip-address>
   $ preconf-cli register-operator -n holesky -p <your-private-key> -k <public-key> -i <your-ip-address>
+  $ preconf-cli register-operator -n hoodi -p <your-private-key> -k <public-key> -i <your-ip-address>
   $ preconf-cli register-operator -n mainnet -p <your-private-key> -k <public-key> -i <your-ip-address>
     `)
     .action(handleRegisterOperator);
@@ -113,13 +118,14 @@ Example:
     program
     .command('intialise-validator')
     .description('Register the validators with public key of operator address.')
-    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, mainnet)")
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, mainnet)")
     .requiredOption("-p, --pvk <type>", "[Required] Private key used to sign the transaction")
     .requiredOption("-k, --pubk <type>", "[Required] Public Key of the operator to be registered")
     .addHelpText('after', `
 Example:
   $ preconf-cli intialise-validator -n devnet -p <your-private-key> -k <validator-public-key>
   $ preconf-cli intialise-validator -n holesky -p <your-private-key> -k <validator-public-key>
+  $ preconf-cli intialise-validator -n hoodi -p <your-private-key> -k <validator-public-key>
   $ preconf-cli intialise-validator -n mainnet -p <your-private-key> -k <validator-public-key>
     `)
     .action(intialiseValidatoSystem);
@@ -127,13 +133,14 @@ Example:
   program
     .command('register-validator')
     .description('Register the validators with public key of operator address.')
-    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, mainnet)")
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, mainnet)")
     .requiredOption("-p, --pvk <type>", "[Required] Private key used to sign the transaction")
     .requiredOption("-k, --pubk <type>", "[Required] Public Key of the operator to be registered")
     .addHelpText('after', `
 Example:
   $ preconf-cli register-validator -n devnet -p <your-private-key> -k <validator-public-key>
   $ preconf-cli register-validator -n holesky -p <your-private-key> -k <validator-public-key>
+  $ preconf-cli register-validator -n hoodi -p <your-private-key> -k <validator-public-key>
   $ preconf-cli register-validator -n mainnet -p <your-private-key> -k <validator-public-key>
     `)
     .action(handleRegisterValidator);
@@ -141,11 +148,12 @@ Example:
   program
     .command('get-active-ips')
     .description('Get active validators (ip address & port)')
-    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, mainnet)")
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, mainnet)")
     .addHelpText('after', `
 Example:
   $ preconf-cli get-active-ips -n devnet
   $ preconf-cli get-active-ips -n holesky
+  $ preconf-cli get-active-ips -n hoodi
   $ preconf-cli get-active-ips -n mainnet
     `)
     .action(getValidators);
@@ -166,11 +174,12 @@ Example:
     .command('check-sidecar-setup')
     .description('Check all components related to sidecar setup are working properly')
     .action(checkSidecarSetup)
-    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, mainnet)")
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, mainnet)")
     .addHelpText('after', `
 Example:
   $ preconf-cli check-sidecar-setup -n devnet
   $ preconf-cli check-sidecar-setup -n holesky
+  $ preconf-cli check-sidecar-setup -n hoodi
   $ preconf-cli check-sidecar-setup -n mainnet
     `);
 
@@ -206,8 +215,8 @@ async function handleWhitelist(options) {
   const network = options["network"] ?? null;
   const ip_address = options['ip'];
 
-  if (!(network === "devnet" || network === "holesky" || network === "mainnet")) {
-    console.log('Network can be only "devnet" or "holesky" or "mainnet"');
+  if (!(network === "devnet" || network === "holesky" || network === "hoodi" || network === "mainnet")) {
+    console.log('Network can be only "devnet", "holesky", "hoodi", or "mainnet"');
     return;
   }
   // TODO: Implement whitelist gateway functionality
@@ -223,8 +232,8 @@ async function handleSend(options) {
   const tx = options['tx'] ?? null;  // Will be null if tx is undefined
 
 
-  if (!(network === "devnet" || network === "holesky" || network === "mainnet")) {
-    console.log('Network can be only "devnet" or "holesky" or "mainnet"');
+  if (!(network === "devnet" || network === "holesky" || network === "hoodi" || network === "mainnet")) {
+    console.log('Network can be only "devnet", "holesky", "hoodi", or "mainnet"');
     return;
   }
   const wallet = await getWallet(network, pvk);
@@ -235,6 +244,8 @@ async function handleSend(options) {
     chainId = 3151908;
   } else if (network === "holesky") {
     chainId = 17000;
+  } else if (network === "hoodi") {
+    chainId = 560048;
   } else if (network === "mainnet") {
     chainId = 1;
   }
@@ -271,8 +282,8 @@ async function handleInitializeRegistrySystem(options) {
   const network = options["network"] ?? null;
   const publicKey = options['pubk'];
 
-  if (!(network === "devnet" || network === "holesky" || network === "mainnet")) {
-    console.log('Network can be only "devnet" or "holesky" or "mainnet"');
+  if (!(network === "devnet" || network === "holesky" || network === "hoodi" || network === "mainnet")) {
+    console.log('Network can be only "devnet", "holesky", "hoodi", or "mainnet"');
     return;
   }
 
@@ -286,8 +297,8 @@ async function handleRegisterValidator(options) {
   const network = options["network"] ?? null;
   const operator_address = options['pubk'];
 
-  if (!(network === "devnet" || network === "holesky" || network === "mainnet")) {
-    console.log('Network can be only "devnet" or "holesky" or "mainnet"');
+  if (!(network === "devnet" || network === "holesky" || network === "hoodi" || network === "mainnet")) {
+    console.log('Network can be only "devnet", "holesky", "hoodi", or "mainnet"');
     return;
   }
 
@@ -301,8 +312,8 @@ async function intialiseValidatoSystem(options) {
   const network = options["network"] ?? null;
   const operator_address = options['pubk'];
 
-  if (!(network === "devnet" || network === "holesky" || network === "mainnet")) {
-    console.log('Network can be only "devnet" or "holesky" or "mainnet"');
+  if (!(network === "devnet" || network === "holesky" || network === "hoodi" || network === "mainnet")) {
+    console.log('Network can be only "devnet", "holesky", "hoodi", or "mainnet"');
     return;
   }
 
@@ -316,8 +327,8 @@ async function handleRegisterProtocol(options) {
   const network = options["network"] ?? null;
   const publicKey = options['pubk'];
 
-  if (!(network === "devnet" || network === "holesky" || network === "mainnet")) {
-    console.log('Network can be only "devnet" or "holesky" or "mainnet"');
+  if (!(network === "devnet" || network === "holesky" || network === "hoodi" || network === "mainnet")) {
+    console.log('Network can be only "devnet", "holesky", "hoodi", or "mainnet"');
     return;
   }
 
@@ -332,8 +343,8 @@ async function handleRegisterOperator(options) {
   const publicKey = options['pubk'];
   const ip_address = options['ip'];
 
-  if (!(network === "devnet" || network === "holesky" || network === "mainnet")) {
-    console.log('Network can be only "devnet" or "holesky" or "mainnet"');
+  if (!(network === "devnet" || network === "holesky" || network === "hoodi" || network === "mainnet")) {
+    console.log('Network can be only "devnet", "holesky", "hoodi", or "mainnet"');
     return;
   }
 

@@ -11,12 +11,19 @@ export const config = {
     HOLESKY_BOLT_GATEWAY_URL: 'http://135.181.191.125:58017',
     PRIMEV_RPC: 'http://37.27.205.126:13523',
     HOLESKY_RPC: 'https://holesky.drpc.org',
+
+
+    // Hoodi URLs
+    HOODI_RPC: 'http://34.148.30.222:8545',
+    HOODI_BEACON_URL: 'http://34.74.59.73:5052',
+
   
     // Helder URLs
-    HELDER_BEACON_URL: 'http://49.13.144.62:4000',
-    HELDER_RPC: 'http://49.13.144.62:8545',
+    HELDER_BEACON_URL: 'http://188.245.156.218:4000',
+    HELDER_RPC: 'http://188.245.156.218:8545',
 
-    // Contract Addresses
+
+    // Contract Addresses 
     DEVNET_GATEWAY_CONTRACT_ADDRESS: '0x4A292867253D5F9Dd4EC7E1D16b0D2772a638429',
     HOLESKY_GATEWAY_CONTRACT_ADDRESS: '0xf06514a4430a2ce9f830357aa2ad85b38c33e567',
     MAINNET_GATEWAY_CONTRACT_ADDRESS: '0xf381e7ebfddbeb888ff8d3c322184b4f46f836bd',
@@ -43,6 +50,5 @@ export const config = {
 
     SECONDS_PER_SLOT: 12,
     SLOTS_PER_EPOCH: 32,
-    GATEWAY_URL: "http://helder-rpc.interstate.so",
-    // GATEWAY_URL: "http://5.161.110.21:9061",
+    GATEWAY_URL: "https://hoodi-rpc.interstate.so",
   };
