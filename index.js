@@ -5,6 +5,9 @@
 
 import { Command } from 'commander';
 import {sendPreconfirmationToSidecar, getProposer, getWallet, sendPreconfirmation, sleep, addWhitelist, addValidator, getValidators, checkSidecarInitialSetup, initializeRegistrySystem, registerProtocol, registerOperator,intialiseValidator } from './lib/index.js';
+import axios from 'axios';
+import { config } from './config.js';
+import { spawn } from 'child_process';
 
 const program = new Command();
 
@@ -183,6 +186,50 @@ Example:
   $ preconf-cli check-sidecar-setup -n mainnet
     `);
 
+  program
+    .command('show-slot-info')
+    .description('Display current slot and next available slots for a network')
+    .requiredOption("-n, --network <type>", "[Required] Network to use (devnet, holesky, hoodi, mainnet)")
+    .addHelpText('after', `
+Example:
+  $ preconf-cli show-slot-info -n devnet
+  $ preconf-cli show-slot-info -n holesky
+  $ preconf-cli show-slot-info -n hoodi
+  $ preconf-cli show-slot-info -n mainnet
+    `)
+    .action(handleShowSlotInfo);
+
+  program
+    .command('start-validator-monitor')
+    .description('Start a server that monitors active validators by mimicking the Builder API')
+    .option("-p, --port <type>", "[Optional] Port to run the server on", "8000")
+    .addHelpText('after', `
+Example:
+  $ preconf-cli start-validator-monitor
+  $ preconf-cli start-validator-monitor -p 8000
+  `)
+    .action((options) => {
+      const port = options.port || 8000;
+      
+      console.log(`Starting validator monitoring server on port ${port}...`);
+      process.env.PORT = port;
+      
+      const child = spawn('node', ['gateway-server.js'], { 
+        stdio: 'inherit',
+        env: process.env
+      });
+      
+      child.on('error', (error) => {
+        console.error('Failed to start validator monitoring server:', error);
+      });
+      
+      process.on('SIGINT', () => {
+        console.log('Stopping validator monitoring server...');
+        child.kill('SIGINT');
+        process.exit(0);
+      });
+    });
+
   await program.parseAsync(process.argv);
 }
 
@@ -351,6 +398,74 @@ async function handleRegisterOperator(options) {
   console.log(`Registering operator with address ${publicKey} and ip address ${ip_address} on network ${network}`);
 
   await registerOperator(pvk, network, publicKey, ip_address);
+}
+
+async function handleShowSlotInfo(options) {
+  const network = options['network'];
+
+  if (!(network === "devnet" || network === "holesky" || network === "hoodi" || network === "mainnet")) {
+    console.log('Network can be only "devnet", "holesky", "hoodi", or "mainnet"');
+    return;
+  }
+
+  console.log(`Fetching slot information for ${network} network...`);
+  
+  let beaconRpc = "";
+  switch (network) {
+    case "devnet":
+      beaconRpc = config.DEVNET_BEACON_URL;
+      break;
+    case "holesky":
+      beaconRpc = config.HOLESKY_BEACON_URL;
+      break;
+    case "mainnet":
+      beaconRpc = config.MAINNET_BEACON_URL;
+      break;
+    case "helder":
+      beaconRpc = config.HELDER_BEACON_URL;
+      break;
+    case "hoodi":
+      beaconRpc = config.HOODI_BEACON_URL;
+      break;
+    default:
+      break;
+  }
+
+  try {
+    const genesis_data = await axios.get(`${beaconRpc}/eth/v1/beacon/genesis`);
+    const genesis_time = parseInt(genesis_data.data.data.genesis_time);
+    console.log("Genesis time:", genesis_time);
+
+    const now = new Date().getTime() / 1000;
+    const current_epoch = Math.floor((now - genesis_time) / (config.SECONDS_PER_SLOT * config.SLOTS_PER_EPOCH));
+    const current_slot = Math.floor((now - genesis_time) / config.SECONDS_PER_SLOT);
+    
+    console.log("Current slot:", current_slot);
+    console.log("Current epoch:", current_epoch);
+    
+    // Get proposer duties for current epoch
+    try {
+      const proposer_duties = await axios.get(`${beaconRpc}/eth/v1/validator/duties/proposer/${current_epoch}`);
+      const available_duties = proposer_duties.data.data;
+      
+      console.log(`\nProposer duties for epoch ${current_epoch}:`);
+      console.log("Slot\t\tValidator Public Key");
+      
+      for (let i = 0; i < available_duties.length; i++) {
+        if (parseInt(available_duties[i].slot) > current_slot) {
+          console.log(`${available_duties[i].slot}\t${available_duties[i].pubkey}`);
+        }
+      }
+      
+      console.log(`\nNext available slot: ${Math.min(...available_duties.filter(duty => parseInt(duty.slot) > current_slot).map(duty => parseInt(duty.slot)))}`);
+      
+    } catch (error) {
+      console.error("Error fetching proposer duties:", error.message);
+    }
+    
+  } catch (error) {
+    console.error("Error fetching genesis data:", error.message);
+  }
 }
 
 main()
